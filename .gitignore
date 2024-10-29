@@ -1,0 +1,61 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# C extensions
+*.pyd
+
+# Distribution / packaging
+.eggs/
+dist/
+build/
+develop-eggs/
+*.egg-info/
+.env
+
+# Django stuff:
+*.sqlite3
+
+# Flask stuff:
+instance/
+
+# Local configuration
+local_settings.py
+*.env
+
+# PyInstaller
+#  - usually these files are better off checked into source control, but you can
+#    use this section to exclude them if you prefer.
+#
+# ../*.[ch]
+# ../*.manifest
+# ../*.spec
+
+# Sphinx documentation
+docs/_build/
+
+# Testing
+.pytest_cache/
+.hypothesis/
+
+# IDE files
+.idea/
+*.iml
+
+# Miscellaneous files
+.DS_Store
+thumbs.db
+*.log
+*.pid
+
+# AWS files
+.aws/
+
+# Azure files
+.azure/
+
+# Google Cloud files
+.gcloud/
+
+.venv/
