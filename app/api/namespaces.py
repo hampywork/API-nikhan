@@ -1,3 +1,4 @@
+# app/api/namespaces.py
 from flask_restx import Api
 
 api = Api(

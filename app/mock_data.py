@@ -1,11 +1,13 @@
+# app/mock_data.py
 from sqlalchemy.orm import Session
 from app.models.product import Product
+from app.extensions import db
 
 
-def create_mock_data(db: Session):
+def create_mock_data(dbsession: Session):
     """Create mock data and initialize the vector store."""
     # Check if we already have products
-    existing_products = db.query(Product).all()
+    existing_products = dbsession.query(Product).all()
     if existing_products:
         return
 
@@ -29,8 +31,8 @@ def create_mock_data(db: Session):
     db_products = []
     for product_data in products_data:
         db_product = Product(**product_data)
-        db.add(db_product)
+        dbsession.add(db_product)
         db_products.append(db_product)
-    db.commit()
+    dbsession.commit()
 
     return db_products

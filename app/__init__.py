@@ -1,57 +1,58 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import event
 from app.core.config import settings
 from app.db.session import SessionLocal
-from app.api.namespaces import api  # Import api from namespaces
-
-db = SQLAlchemy()
+from app.extensions import db
+from app.embeddings import faiss_service  # Import the singleton instance
 
 
 def create_app():
     app = Flask(__name__)
-
-    # CORS configuration
     CORS(app)
 
-    # Database configuration
     app.config["SQLALCHEMY_DATABASE_URI"] = settings.DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["FLASK_RUN_OPTIONS"] = {"threaded": False}
+
+    # Initialize extensions
     db.init_app(app)
 
-    # Create the tables if they don't exist
+    # Import these after db initialization to avoid circular imports
+    from app.models.product import Product  # noqa
+    from app.api.namespaces import api
+    from app.mock_data import create_mock_data
+
     with app.app_context():
+        # Create database tables
         db.create_all()
 
-    # Initialize API
+        print("before mock")
+        create_mock_data(db.session)
+        print("after mock")
+
+        # Initialize FAISS service
+        try:
+            faiss_service.initialize_index()
+        except ValueError as e:
+            print(str(e))
+
+    # Initialize Flask-RestX API
     api.init_app(app)
 
-    # Make a SessionLocal available to all blueprints
     app.session_local = SessionLocal
 
     @app.teardown_appcontext
-    def close_session(exception):
-        db.session.close()
+    def close_session(exception=None):
+        db.session.remove()
+
+    @event.listens_for(db.session, "after_attach")
+    def on_attach(session, instance):
+        if not session.app.debug:
+            session.configure(expire_on_commit=False)
+
+    @event.listens_for(db.session, "after_rollback")
+    def on_rollback(session):
+        session.rollback()
 
     return app
-
-
-# Your event listeners...
-@event.listens_for(db.session, "after_attach")
-def on_attach(session, instance):
-    """This will be called when the app is initialized."""
-    if not session.app.debug:
-        session.configure(expire_on_commit=False)
-
-
-@event.listens_for(db.session, "after_commit")
-def on_commit(session):
-    """This will be called after a commit."""
-    pass
-
-
-@event.listens_for(db.session, "after_rollback")
-def on_rollback(session):
-    """This will be called after a rollback."""
-    session.close()
