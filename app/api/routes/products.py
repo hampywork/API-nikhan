@@ -26,8 +26,4 @@ class ProductList(Resource):
         except ValueError as e:
             products_ns.abort(400, str(e))
         except Exception as e:
-            # Capture the error and send it to the client
-            print(f"Internal server error: {str(e)}")
-            return {
-                "error": str(e)
-            }, 500  # Return the error message and a 500 status code
+            products_ns.abort(500, f"Internal server error: {str(e)}")
