@@ -1,10 +1,7 @@
 from typing import List
 from app.schemas.product import ProductSchema
 from app.embeddings import faiss_service
-from app.models.product import Product
-
-# Any other files that need database access
-from app.extensions import db
+from app.extensions import db  # Import db from extensions.py
 
 
 def get_similar_products(query: str, top_k: int = 5) -> List[ProductSchema]:
@@ -12,7 +9,8 @@ def get_similar_products(query: str, top_k: int = 5) -> List[ProductSchema]:
     results = faiss_service.search(query, top_k)
     similar_products = []
     for result in results:
-        with db() as session:  # Use a session for query
+        # Use db.session to create a new session
+        with db.session() as session:
             product = (
                 session.query(Product)
                 .filter(Product.id == result["product_id"])
