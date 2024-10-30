@@ -1,8 +1,8 @@
 from flask_restx import Namespace, Resource
 from flask import request
-
-
 from app.services.product_service import get_similar_products
+from app.schemas.product import ProductSchema
+import json  # Import the json module
 
 products_ns = Namespace("products", description="Product operations")
 
@@ -19,7 +19,8 @@ class ProductList(Resource):
                 products_ns.abort(400, "Query parameter is required")
 
             similar_products = get_similar_products(query, top_k)
-            return similar_products
+            # Serialize using the custom encoder
+            return json.dumps(similar_products, cls=CustomJSONEncoder)
 
         except RuntimeError as e:
             products_ns.abort(503, f"Search service unavailable: {str(e)}")
@@ -31,3 +32,10 @@ class ProductList(Resource):
             return {
                 "error": str(e)
             }, 500  # Return the error message and a 500 status code
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ProductSchema):
+            return obj.dict()
+        return super().default(obj)
