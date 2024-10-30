@@ -1,0 +1,11 @@
+product_id,description,title,image_path
+1,"Men's volleyball shoes designed for superior grip and comfort on the court. Lightweight and breathable.",Men's Volleyball Shoes,./images/volleyball_shoes.jpg
+2,"Men's basketball shorts with moisture-wicking fabric for optimal performance. Durable and stylish.",Men's Basketball Shorts,./images/basketball_shorts.png
+3,"Men's t-shirt, size medium, made of soft cotton. Classic fit and versatile for everyday wear.",Men's T-Shirt (Size M),./images/tshirt.jpg
+4,"Women's volleyball kit includes a jersey, shorts, and knee pads. Designed for competitive play.",Women's Volleyball Kit,./images/volleyball_kit.jpg
+5,"Unisex sports socks with arch support and cushioning for enhanced comfort during any activity.",Unisex Sports Socks,./images/socks.jpg
+6,"Lightweight and durable water bottle perfect for staying hydrated during workouts or outdoor adventures.",Sports Water Bottle,./images/water_bottle.jpg
+7,"Yoga mat with non-slip surface for enhanced stability and grip. Ideal for all levels of yoga practice.",Yoga Mat,./images/yoga_mat.jpg
+8,"Adjustable weightlifting gloves for a secure and comfortable grip. Protect your hands during intense training.",Weightlifting Gloves,./images/gloves.jpg
+9,"High-quality jump rope for cardio workouts and improving fitness. Durable and easy to handle.",Jump Rope,./images/jump_rope.jpg
+10,"Comfortable and supportive sports bra for women. Provides excellent support during high-impact activities.",Sports Bra,./images/sports_bra.jpg
