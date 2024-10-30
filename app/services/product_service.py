@@ -2,6 +2,7 @@ from typing import List
 from app.schemas.product import ProductSchema
 from app.embeddings import faiss_service
 from app.extensions import db  # Import db from extensions.py
+from app.models.product import Product
 
 
 def get_similar_products(query: str, top_k: int = 5) -> List[ProductSchema]:
