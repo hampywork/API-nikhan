@@ -4,7 +4,7 @@ import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
 from PIL import Image
-import io
+
 
 # Load the SentenceTransformer model
 model = SentenceTransformer("all-MiniLM-L6-v2")
