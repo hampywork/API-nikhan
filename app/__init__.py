@@ -13,7 +13,6 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = settings.DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["FLASK_RUN_OPTIONS"] = {"threaded": False}
 
     # Initialize extensions
     db.init_app(app)

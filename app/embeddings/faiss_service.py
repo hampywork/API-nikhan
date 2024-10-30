@@ -23,6 +23,15 @@ class FaissService:
             self.descriptions: List[str] = []
             self._initialized = True
 
+    def __del__(self):
+        if self.index is not None:
+            try:
+                # Release the FAISS index
+                faiss.delete_index(self.index)
+            except:
+                pass
+            self.index = None
+
     def initialize_index(self) -> None:
         try:
             all_products = db.session.query(Product).all()
@@ -59,9 +68,7 @@ class FaissService:
 
     def search(self, query: str, top_k: int = 5) -> List[Dict]:
         if self.index is None:
-            raise RuntimeError(
-                "FAISS index is not initialized. Please initialize the index first."
-            )
+            self.initialize_index()
 
         if not query.strip():
             raise ValueError("Search query cannot be empty")
