@@ -95,8 +95,8 @@ if prompt := st.chat_input("What are you looking for?"):
 
             with col2:
                 st.markdown(f"**{product['title']}**")
-                st.markdown(product["description"])
                 st.markdown(f"$ **{product['price']}**")
+                st.markdown(product["description"])
 
     # Add assistant response to chat history
     st.session_state.messages.append(
