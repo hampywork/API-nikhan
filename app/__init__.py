@@ -5,14 +5,26 @@ from app.core.config import settings
 from app.db.session import SessionLocal
 from app.extensions import db
 from app.embeddings import faiss_service  # Import the singleton instance
+import json
+from app.schemas.product import ProductSchema  # Import your ProductSchema
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, ProductSchema):
+            return obj.model_dump()  # Convert ProductSchema to a dictionary
+        return super().default(obj)
 
 
 def create_app():
     app = Flask(__name__)
     CORS(app)
+    # Use the custom encoder in your Flask app
+    app.json_encoder = CustomJSONEncoder
 
     app.config["SQLALCHEMY_DATABASE_URI"] = settings.DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["FLASK_RUN_OPTIONS"] = {"threaded": False}
 
     # Initialize extensions
     db.init_app(app)
